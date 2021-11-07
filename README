@@ -1,2 +1,39 @@
-# ex1b
-Windows - Creating Child Processes
+
+File: ex1ba1.c ex1ba2.c ex1ba3.c
+Calculating Executable Times of Bubble and Quick Sort - Windows
+=====================================================================
+Written by: Tali Kalev, ID:208629691, Login: talikal
+		and	Noga Levy, ID:315260927, Login: levyno
+
+This program receives in the argument vectors, the name of a file and 
+an integer. The program creates 2 child proccesses - one for bubble sort 
+and the other for quick sort.
+Each child creates an array with 50000 cells, inserts random integers and 
+sorts them. Both children calculate the time it took them to sort the array
+and print this result into the file sent in the argument vector.
+The parent repeates this process of creating 2 children that sort the
+array 50 times.
+At the end of this process, the parent goes over the file in which
+the results were printed and calculates the minimum, maximum and average
+times for each sorting methods.
+The parent prints in the command line these calculations and when it is 
+finished it prints its own executable time. Before the program finishes, it 
+deletes the file used.
+deletes the file used.
+
+Compile:   gcc -Wall ex1ba1.c -o ex1ba1
+		   gcc -Wall ex1ba2.c -o ex1ba2
+		   gcc -Wall ex1ba3.c -o ex1ba3
+
+Run: ./ex1ba1.exe <filename> <integer>
+
+Input: When running the executable file, add name of file and integer.
+	   Example: ./ex1ba1.exe filename 17
+	 
+
+Output: Average bubble sort time, average quick sort time, 	
+		minimum bubble sort time, minimum quick sort time, 
+		maximum bubble sort time, maximum bubble sort time,
+		Parent sort time.
+		Example: 4.505360 4.520000 4.449000 0.006000 4.598000 4.598000
+				228.755000

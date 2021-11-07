@@ -1,20 +1,38 @@
-// Quick sort
+/*
 
+	File: ex1ba3.c
+	Calculating Executable Times of Quicksort Algorithm - Windows
+	=====================================================================
+	Written by: Tali Kalev, ID:208629691, Login: talikal
+			and	Noga Levy, ID:315260927, Login: levyno
+
+	This program receives in the argument vectors, the name of a file and
+	an integer. The program creates an array with 50000 cells, inserts random
+	integers and sorts them using the quicksort algorithm. The program
+	calculates the time it took to sort the array and print this result into
+	the file sent in the argument vector.
+
+	Compile:  gcc -Wall ex1ba3.c -o ex1ba3
+
+	Run:	The program is run through executable file ex1ba1.exe:
+			./ex1ba1.exe <filename> <integer>
+
+	Input: When running the executable file, add name of file and integer.
+		   Example: ./ex1ba1.exe filename 17
+
+
+	Output: The running time is printed into file given.
+			Example: q 0.024952
+*/
 // --------include section------------------------
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h> //?
-#include <sys/types.h>
-#include <unistd.h>
-//#include <sys/wait.h>
-#include <sys/time.h>
 #include <time.h>
 
 // ----------- const section ---------------------
 
 const int SIZE = 50000;
-
 
 // -------prototype section-----------------------
 
@@ -32,8 +50,8 @@ void swap(int* a, int* b);
 
 int main(int argc, char *argv[])
 {
-	check_argv(argc); //different value
-	srand(atoi(argv[2])); //make sure number is correct
+	check_argv(argc); //make sure number is correct
+	srand(atoi(argv[2])); //changes char to int
 	create_sort_arr(argv[1]); 
 
 	return EXIT_SUCCESS;
@@ -55,12 +73,11 @@ FILE * open_file(char* filename,  char *mode)
     return fp;
 }
 
-
 //------------------------------------------------
 
 void create_sort_arr(char* filename)
 {
-	FILE *fp = open_file(filename, "w");
+	FILE *fp = open_file(filename, "a+");
 	int arr[SIZE];
 	randomize_array(arr);
 	handle_quick_sort(arr, &fp);
@@ -75,7 +92,6 @@ void randomize_array(int arr[])
 		arr[index] = (rand() % 1000); 
 }
 
-
 //------------------------------------------------
 
 //function receives array and file, sorts array and puts calculated
@@ -84,9 +100,10 @@ void handle_quick_sort(int arr[], FILE **fp)
 {
 	int first = 0, last = SIZE - 1;
 	clock_t time_req = clock();
+
 	quick_sort(arr, first, last);
-	time_req = (double)(clock() - time_req) / CLOCKS_PER_SEC;
-	fprintf(*fp, "%s %lf\n", "q", (double)time_req);
+	
+	fprintf(*fp, "%s %lf\n", "q", ((double)clock() - time_req) / CLOCKS_PER_SEC);
 }
 
 //------------------------------------------------
