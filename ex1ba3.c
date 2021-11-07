@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <stdbool.h> //?
 #include <sys/types.h>
-//#include <time.h> //for clock()
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/time.h>
@@ -14,19 +13,16 @@
 // ----------- const section ---------------------
 
 const int SIZE = 50000;
-const int NUM_OF_LOOPS = 50;
+
 
 // -------prototype section-----------------------
 
 FILE* open_file(char* argv,  char *mode);
 void close_file(FILE **fp);
 void check_argv(int argc );
-void calc_sort_times(char *filename);
-
+void create_sort_arr(char* filename)
 void quick_sort(int arr[], int first_i, int last_i);
-
 void randomize_array(int arr[]);
-
 void handle_quick_sort(int arr[], FILE ***fp);
 int partition (int arr[], int low, int high);
 void swap(int* a, int* b);
@@ -38,9 +34,9 @@ int main(int argc, char *argv[])
 	struct timeval t0, t1;
 	gettimeofday(&t0, NULL); //calculating start time
 	
-	check_argv(argc);
-	srand(atoi(argv[2])); 
-	calc_sort_times(argv[1]); 
+	check_argv(argc); //different value
+	srand(atoi(argv[2])); //make sure number is correct
+	create_sort_arr(argv[1]); 
 
 	gettimeofday(&t1, NULL); //calculating end time
 	//printing time parent took to run
@@ -66,47 +62,16 @@ FILE * open_file(char* filename,  char *mode)
     return fp;
 }
 
-//-------------------------------------------------
-
-//function receives filename and calculates sort time
-//of bubble and quick sort via children
-void calc_sort_times(char *filename)
-{
-	int i, j;
-	pid_t pid;
-	int arr[SIZE];
-	FILE *fp = open_file(filename, "w+");
-
-	for(i = 0; i < NUM_OF_LOOPS; i++)
-	{
-		randomize_array(arr); //putting random numbers in array
-
-		//create two child proccess
-		for(j = 0; j < 2; j++)
-		{
-			pid = fork(); // change - spawn -_P_WAIT, path
-
-			if(pid < 0) // handle error in fork()
-			{
-				perror("Cannot fork()");
-				exit (EXIT_FAILURE);
-			}
-
-			if(pid == 0) //if child
-				handle_child(j, arr, &fp);
-		}
-		//parent wait for both children
-		for(j = 0; j < 2; j++)
-			wait(NULL);
-	}
-
-	parent_calc(fp); //parent prints data from file
-	close_file(&fp);
-	unlink(filename); //deleting file
-}
-
 
 //------------------------------------------------
+
+void create_sort_arr(char* filename)
+{
+	FILE *fp = open_file(argv[1], "w");
+	int arr[SIZE];
+	randomize_arr(arr);
+	handle_quick_sort(arr, &fp)
+}
 
 //function recieves array and enters randomized numbers into it
 void randomize_array(int arr[])

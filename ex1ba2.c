@@ -19,14 +19,10 @@ const int SIZE = 50000;
 FILE* open_file(char* argv,  char *mode);
 void close_file(FILE **fp);
 void check_argv(int argc );
-void calc_sort_times(char *filename);
 void bubble_sort(int arr[]);
-
+void create_sort_arr(char* filename);
 void randomize_array(int arr[]);
-
 void handle_bubble_sort(int arr[], FILE ***fp);
-
-void swap(int* a, int* b);
 
 //---------main section---------------------------
 
