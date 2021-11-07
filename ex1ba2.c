@@ -16,6 +16,7 @@ const int SIZE = 50000;
 
 // -------prototype section-----------------------
 
+void create_sort_arr(char* filename);
 FILE* open_file(char* argv,  char *mode);
 void close_file(FILE **fp);
 void check_argv(int argc );
@@ -67,10 +68,10 @@ FILE * open_file(char* filename,  char *mode)
 
 void create_sort_arr(char* filename)
 {
-	FILE *fp = open_file(argv[1], "w");
+	FILE *fp = open_file(filename, "w");
 	int arr[SIZE];
-	randomize_arr(arr);
-	handle_bubble_sort(arr, &fp)
+	randomize_array(arr);
+	handle_bubble_sort(arr, &fp);
 }
 
 //function recieves array and enters randomized numbers into it
