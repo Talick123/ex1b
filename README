@@ -21,6 +21,8 @@ finished it prints its own executable time. Before the program finishes, it
 deletes the file used.
 deletes the file used.
 
+The average running time for the parent process is: 231.755.
+
 Compile:   gcc -Wall ex1ba1.c -o ex1ba1
 		   gcc -Wall ex1ba2.c -o ex1ba2
 		   gcc -Wall ex1ba3.c -o ex1ba3

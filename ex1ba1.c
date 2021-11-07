@@ -1,5 +1,5 @@
 
-	/*
+/*
 	File: ex1ba1.c
 	Calculating Executable Times of Bubble and Quick Sort - Windows
 	=====================================================================
