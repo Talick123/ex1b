@@ -45,7 +45,7 @@ Output: Average bubble sort time, average quick sort time,
 #include <stdbool.h> //?
 #include <sys/types.h>
 #include <unistd.h>
-#include <sys/wait.h> //no need?
+//#include <sys/wait.h> //no need?
 #include <sys/time.h>
 #include <process.h>
 #include <windows.h> //needed for spawn?
@@ -63,7 +63,7 @@ void check_argv(int argc );
 
 void parent_calc(FILE *fp);
 
-void handle_child(int child_num, int arr[], FILE **fp);
+void calc_sort_times(char* argv[]);
 
 //---------main section---------------------------
 /*
@@ -111,7 +111,7 @@ FILE * open_file(char* filename,  char *mode)
 //of bubble and quick sort via children
 void calc_sort_times(char *argv[])
 {
-	int i, j;
+	int i;
 	
 	FILE *fp = open_file(argv[1], "r");
 

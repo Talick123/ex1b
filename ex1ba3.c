@@ -8,7 +8,7 @@
 #include <sys/types.h>
 //#include <time.h> //for clock()
 #include <unistd.h>
-#include <sys/wait.h>
+//#include <sys/wait.h>
 #include <sys/time.h>
 
 // ----------- const section ---------------------
