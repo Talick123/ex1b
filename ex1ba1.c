@@ -49,10 +49,11 @@ Output: Average bubble sort time, average quick sort time,
 #include <sys/time.h>
 #include <process.h>
 #include <windows.h> //needed for spawn?
+#include <time.h>
 
 // ----------- const section ---------------------
 
-const int SIZE = 50000;
+
 const int NUM_OF_LOOPS = 50;
 
 // -------prototype section-----------------------
@@ -75,17 +76,13 @@ void calc_sort_times(char* argv[]);
 
 int main(int argc, char *argv[])
 {
-	struct timeval t0, t1;
-	gettimeofday(&t0, NULL); //calculating start time
+	clock_t time_req = clock();
 	
 	check_argv(argc);
 	calc_sort_times(argv); 
 
-	gettimeofday(&t1, NULL); //calculating end time
-	//printing time parent took to run
-	printf("%f\n",(double)(t1.tv_usec - t0.tv_usec)/1000000 +
-									(double)(t1.tv_sec - t0.tv_sec));
-
+	time_req = (double)(clock() - time_req) / CLOCKS_PER_SEC;
+	printf("%lf\n", (double)time_req);
 	return EXIT_SUCCESS;
 }
 
@@ -94,7 +91,7 @@ int main(int argc, char *argv[])
 //function opens file and checks that process was completed successfully
 FILE * open_file(char* filename,  char *mode)
 {
-	FILE *fp = fopen(filename, mode);
+	FILE *fp = fopen(filename, mode); //CHECK MODE!!!!!!!!!!!!!!!!!!
 
 	//if unsuccessful stops program
 	if (fp == NULL)
@@ -117,13 +114,13 @@ void calc_sort_times(char *argv[])
 
 	for(i = 0; i < NUM_OF_LOOPS; i++)
 	{
-		_spawnl(_P_WAIT, "path", "ex1ba2.exe",argv[1], argv[2], NULL);
-		_spawnl(_P_WAIT, "path", "exe1ba3.exe",argv[1], argv[2], NULL); 
+		_spawnlp(_P_WAIT, "ex1ba2.exe", "ex1ba2.exe",argv[1], argv[2], NULL);
+		_spawnlp(_P_WAIT, "exe1ba3.exe", "exe1ba3.exe",argv[1], argv[2], NULL); 
 	}
 
 	parent_calc(fp); //parent prints data from file
 	close_file(&fp);
-	remove(filename); //deleting file
+	remove(argv[1]); //deleting file
 }
 
 //------------------------------------------------
@@ -141,7 +138,7 @@ void parent_calc(FILE *fp)
 	min_qsort = min_bsort = 100;
 
 	//returning to start of file
-	rewind(fp);
+	rewind(fp); //CHECK THAT IT WORKS
 	fscanf(fp, "%c", &type); //read char from file into 'type' variable
 
 	while(!feof(fp))

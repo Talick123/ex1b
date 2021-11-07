@@ -9,6 +9,7 @@
 #include <unistd.h>
 //#include <sys/wait.h>
 #include <sys/time.h>
+#include <time.h>
 
 // ----------- const section ---------------------
 
@@ -20,10 +21,10 @@ const int SIZE = 50000;
 FILE* open_file(char* argv,  char *mode);
 void close_file(FILE **fp);
 void check_argv(int argc );
-void create_sort_arr(char* filename)
+void create_sort_arr(char* filename);
 void quick_sort(int arr[], int first_i, int last_i);
 void randomize_array(int arr[]);
-void handle_quick_sort(int arr[], FILE ***fp);
+void handle_quick_sort(int arr[], FILE **fp);
 int partition (int arr[], int low, int high);
 void swap(int* a, int* b);
 
@@ -31,17 +32,9 @@ void swap(int* a, int* b);
 
 int main(int argc, char *argv[])
 {
-	struct timeval t0, t1;
-	gettimeofday(&t0, NULL); //calculating start time
-	
 	check_argv(argc); //different value
 	srand(atoi(argv[2])); //make sure number is correct
 	create_sort_arr(argv[1]); 
-
-	gettimeofday(&t1, NULL); //calculating end time
-	//printing time parent took to run
-	printf("%f\n",(double)(t1.tv_usec - t0.tv_usec)/1000000 +
-									(double)(t1.tv_sec - t0.tv_sec));
 
 	return EXIT_SUCCESS;
 }
@@ -67,10 +60,10 @@ FILE * open_file(char* filename,  char *mode)
 
 void create_sort_arr(char* filename)
 {
-	FILE *fp = open_file(argv[1], "w");
+	FILE *fp = open_file(filename, "w");
 	int arr[SIZE];
-	randomize_arr(arr);
-	handle_quick_sort(arr, &fp)
+	randomize_array(arr);
+	handle_quick_sort(arr, &fp);
 }
 
 //function recieves array and enters randomized numbers into it
@@ -87,16 +80,13 @@ void randomize_array(int arr[])
 
 //function receives array and file, sorts array and puts calculated
 //run time into file
-void handle_quick_sort(int arr[], FILE ***fp)
+void handle_quick_sort(int arr[], FILE **fp)
 {
-	int first = 0, last = SIZE -1;
-	struct timeval t0, t1;
-	
-	gettimeofday(&t0, NULL);
+	int first = 0, last = SIZE - 1;
+	clock_t time_req = clock();
 	quick_sort(arr, first, last);
-	gettimeofday(&t1, NULL);
-	fprintf(**fp, "%s %f\n", "q", (double)(t1.tv_usec - t0.tv_usec)/1000000 +
-									(double)(t1.tv_sec - t0.tv_sec));
+	time_req = (double)(clock() - time_req) / CLOCKS_PER_SEC;
+	fprintf(*fp, "%s %lf\n", "q", (double)time_req);
 }
 
 //------------------------------------------------

@@ -9,6 +9,7 @@
 #include <unistd.h>
 //#include <sys/wait.h>
 #include <sys/time.h>
+#include <time.h>
 
 // ----------- const section ---------------------
 
@@ -23,23 +24,15 @@ void check_argv(int argc );
 void bubble_sort(int arr[]);
 void create_sort_arr(char* filename);
 void randomize_array(int arr[]);
-void handle_bubble_sort(int arr[], FILE ***fp);
+void handle_bubble_sort(int arr[], FILE **fp);
 
 //---------main section---------------------------
 
 int main(int argc, char *argv[])
-{
-	struct timeval t0, t1;
-	gettimeofday(&t0, NULL); //calculating start time
-	
+{	
 	check_argv(argc); //different value
 	srand(atoi(argv[2])); //make sure number is correct
 	create_sort_arr(argv[1]); 
-
-	gettimeofday(&t1, NULL); //calculating end time
-	//printing time parent took to run
-	printf("%f\n",(double)(t1.tv_usec - t0.tv_usec)/1000000 +
-									(double)(t1.tv_sec - t0.tv_sec));
 
 	return EXIT_SUCCESS;
 }
@@ -83,16 +76,14 @@ void randomize_array(int arr[])
 
 //function receives array and file, sorts array and puts calculated
 //run time into file
-void handle_bubble_sort(int arr[], FILE ***fp)
+void handle_bubble_sort(int arr[], FILE **fp)
 {
-	struct timeval t0, t1;
-	
-	gettimeofday(&t0, NULL);
+	clock_t time_req = clock();
+
 	bubble_sort(arr);
-	gettimeofday(&t1, NULL);
+	time_req = (double)(clock() - time_req) / CLOCKS_PER_SEC;
 	//return to beginning?
-	fprintf(**fp, "%s %f\n", "b", (double)(t1.tv_usec - t0.tv_usec)/1000000 +
-									(double)(t1.tv_sec - t0.tv_sec));
+	fprintf(*fp, "%s %lf\n", "b", (double)time_req);
 }
 
 //------------------------------------------------
